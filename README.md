@@ -13,18 +13,30 @@ A GitHub Action that listens for a `/assign` "command" (an issue comment that st
 name: Slash assign
 
 on:
+  schedule:
+    cron: 0 0 * * *
   issue_comment:
     types: [created]
 
 jobs:
-  if: ${{ github.event_name == issue_comment }} && ${{ startsWith(github.event.comment.body, "/assign") }}
-  build:
+  assign:
+    if: ${{ github.event_name == issue_comment }} && ${{ startsWith(github.event.comment.body, "/assign") }}
     runs-on: ubuntu-latest
     steps:
       - name: Assign the user
         uses: JasonEtco/slash-assign-action@v1
         with:
           required_label: good-first-issue
+          mark_label: assigned-to-contributor
+
+  unassign:
+    if: ${{ github.event_name == schedule }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unassign stale issues
+        uses: JasonEtco/slash-assign-action@v1
+        with:
+          mark_label: assigned-to-contributor
 ```
 
 ## TODO

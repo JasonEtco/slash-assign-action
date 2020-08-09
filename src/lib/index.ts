@@ -2,8 +2,9 @@ import { Toolkit } from 'actions-toolkit'
 import dedent from 'dedent'
 
 export interface Inputs {
+  mark_label: string
+  assignment_length: string
   required_label?: string
-  assignment_length?: string
   pin_label?: string
   [key: string]: string
 }
@@ -35,6 +36,12 @@ export default async function slashAssignAction(tools: Toolkit<Inputs>) {
     await tools.github.issues.addAssignees({
       ...tools.context.issue,
       assignees: [comment.user.login]
+    })
+
+    // Label the issue
+    await tools.github.issues.addLabels({
+      ...tools.context.issue,
+      labels: [tools.inputs.mark_label]
     })
 
     // Comment saying wassup
