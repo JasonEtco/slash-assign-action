@@ -5,7 +5,7 @@
 
 ---
 
-A GitHub Action that listens for a `/assign` "command" (an issue comment that starts with `/assign`).
+A GitHub Action that listens for a `/assign` "command" (an issue comment that starts with `/assign`) and assigns the commenter to the issue. It can also unassign issues that have been assigned for a configured amount of time.
 
 ## Usage
 
