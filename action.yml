@@ -1,0 +1,18 @@
+name: Slash-Assign Action
+description: Enables a `/assign` command that allows contributors to assign themselves to issues
+runs:
+  using: node12
+  main: dist/index.js
+branding:
+  icon: archive
+  color: blue
+inputs:
+  required_label:
+    description: If set, the issue must have this label to be assigned.
+  assignment_length:
+    default: 2 weeks
+    description: The span of time between a user assigning themselves to an issue and it being unassigned again.
+  pin_label:
+    default: pinned
+    description: A label that prevents the user from being unassigned, typically for issues that are expected to take a long time.
+

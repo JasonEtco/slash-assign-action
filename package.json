@@ -1,0 +1,60 @@
+{
+  "name": "build-and-tag-action",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "npx ncc run ./src/index.ts",
+    "build": "npx ncc build ./src/index.ts",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "actions-toolkit": "^6.0.0",
+    "dedent": "^0.7.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node12": "^1.0.7",
+    "@types/dedent": "^0.7.0",
+    "@types/jest": "^26.0.9",
+    "@types/js-yaml": "^3.12.5",
+    "@types/semver": "^7.3.1",
+    "@zeit/ncc": "^0.22.3",
+    "husky": "^4.2.5",
+    "jest": "^26.2.2",
+    "js-yaml": "^3.14.0",
+    "nock": "^13.0.3",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/setup.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/lib/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      ".+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": false
+      }
+    }
+  }
+}
