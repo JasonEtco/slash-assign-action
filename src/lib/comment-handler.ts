@@ -36,13 +36,14 @@ export default function commentHandler (tools: SlashAssignToolkit) {
       labels: [tools.inputs.mark_label]
     })
 
+    const days = parseInt(tools.inputs.days_until_unassign, 10)
     // Comment saying wassup
     await tools.github.issues.createComment({
       ...tools.context.issue,
       body: dedent`
         This issue [has been assigned](${comment.html_url}) to ${comment.user.login}!
 
-        It will become unassigned if it isn't closed within ${tools.inputs.assignment_length}. A maintainer can also add the **${tools.inputs.pin_label}** to prevent it from being unassigned.
+        It will become unassigned if it isn't closed within ${days} days. A maintainer can also add the **${tools.inputs.pin_label}** to prevent it from being unassigned.
       `
     })
   })

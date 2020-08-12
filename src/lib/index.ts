@@ -4,9 +4,10 @@ import scheduleHandler from './schedule-handler'
 
 export interface Inputs {
   mark_label: string
-  assignment_length: string
   required_label?: string
   pin_label?: string
+  days_until_warning: string
+  days_until_unassign: string
   [key: string]: string
 }
 
