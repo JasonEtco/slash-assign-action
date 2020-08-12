@@ -1,10 +1,9 @@
 import nock from 'nock'
-import { Toolkit } from 'actions-toolkit'
-import slashAssignAction from '../src/lib'
+import slashAssignAction, { SlashAssignToolkit } from '../src/lib'
 import { generateToolkit } from './helpers'
 
 describe('slash-assign-action', () => {
-  let tools: Toolkit
+  let tools: SlashAssignToolkit
 
   beforeEach(() => {
     nock.cleanAll()
