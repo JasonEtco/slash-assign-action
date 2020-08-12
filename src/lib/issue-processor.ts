@@ -60,18 +60,34 @@ export default class StaleAssignments {
     return issues.data.items
   }
 
-  async hasWarningMessage (issue: Issue): Promise<boolean> {
-    return true
+  async hasWarningLabel (issue: Issue): Promise<boolean> {
+    return issue
+      .labels
+      .some(label => label.name === this.tools.inputs.stale_assignment_label)
   }
 
   async postWarningMessage (issue: Issue) {
-
+    return Promise.all([
+      this.tools.github.issues.createComment({
+        ...this.tools.context.repo,
+        issue_number: issue.number,
+        body: 'This will become unassigned!'
+      }),
+      this.tools.github.issues.addLabels({
+        ...this.tools.context.repo,
+        issue_number: issue.number,
+        labels: [this.tools.inputs.stale_assignment_label]
+      }),
+    ])
   }
 
   async unassignIssue (issue: Issue) {
-
+    return this.tools.github.issues.removeAssignees({
+      ...this.tools.context.repo,
+      issue_number: issue.number,
+      assignees: [issue.assignee]
+    })
   }
-
 
   since (days: number) {
     const ttl = days * 24 * 60 * 60 * 1000

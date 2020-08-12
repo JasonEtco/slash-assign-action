@@ -18,6 +18,9 @@ inputs:
   days_until_unassign:
     default: 7
     description: The span of time (in days) between a warning (see `days_until_warning`) and the issue being unassigned automatically.
+  stale_assignment_label:
+    default: stale-assignment
+    description: The label applied when the assignment is stale (>= `days_until_warning`).
   pin_label:
     default: pinned
     description: A label that prevents the user from being unassigned, typically for issues that are expected to take a long time.

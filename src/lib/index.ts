@@ -8,6 +8,7 @@ export interface Inputs {
   pin_label?: string
   days_until_warning: string
   days_until_unassign: string
+  stale_assignment_label: string
   [key: string]: string
 }
 
