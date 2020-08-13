@@ -17,7 +17,7 @@ export type SlashAssignToolkit = Toolkit<Inputs>
 export default async function slashAssignAction(tools: SlashAssignToolkit) {
   switch (tools.context.event) {
     case 'issue_comment':
-      commentHandler(tools)
+      await commentHandler(tools)
       break
     case 'schedule':
       await scheduleHandler(tools)

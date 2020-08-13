@@ -4,31 +4,33 @@ import { SearchIssuesAndPullRequestsResponseData } from '@octokit/types'
 export type Issue = SearchIssuesAndPullRequestsResponseData['items'][0]
 
 export default class StaleAssignments {
+  private assignmentDuration: number
+
   constructor (
     private tools: SlashAssignToolkit
-  ) {}
+  ) {
+    this.assignmentDuration = (
+      parseInt(this.tools.inputs.days_until_warning, 10) +
+      parseInt(this.tools.inputs.days_until_unassign, 10)
+    )
+  }
 
   async getStaleAssignments () {
     const assignedLabel = this.tools.inputs.assigned_label
     const exemptLabel = this.tools.inputs.pin_label
-
-    const queryParts = [
-      `label:"${assignedLabel}"`,
-      `-label:"${exemptLabel}"`,
-      'is:issue'
-    ]
-
-    return this.search(queryParts)
-  }
-
-  async search (query: string[]) {
     const { owner, repo } = this.tools.context.repo
-    const assignmentLength = parseInt(this.tools.inputs.days_until_warning, 10)
-    const timestamp = this.since(assignmentLength)
+
+    const timestamp = this.since(this.assignmentDuration)
       .toISOString()
       .replace(/\.\d{3}\w$/, '')
 
     const q = [
+      // Only get issues with the label that shows they've been assigned
+      `label:"${assignedLabel}"`,
+      // Don't include issues that can be stale
+      `-label:"${exemptLabel}"`,
+      // Only include issues, not PRs
+      'is:issue',
       // Only search within this repository
       `repo:${owner}/${repo}`,
       // Only find issues/PRs with an assignee
@@ -36,9 +38,7 @@ export default class StaleAssignments {
       // Only find opened issues/PRs
       'is:open',
       // Updated within the last X days
-      `updated:<${timestamp}`,
-      // And our ending bits
-      ...query
+      `updated:<${timestamp}`
     ]
 
     const issues = await this.tools.github.search.issuesAndPullRequests({
@@ -51,7 +51,7 @@ export default class StaleAssignments {
     return issues.data.items
   }
 
-  async hasWarningLabel (issue: Issue): Promise<boolean> {
+  hasWarningLabel (issue: Issue): boolean {
     return issue
       .labels
       .some(label => label.name === this.tools.inputs.stale_assignment_label)

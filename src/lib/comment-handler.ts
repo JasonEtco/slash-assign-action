@@ -2,8 +2,8 @@ import dedent from 'dedent'
 import { SlashAssignToolkit } from '.'
 import { Issue } from './issue-processor'
 
-export default function commentHandler (tools: SlashAssignToolkit) {
-  tools.command('assign', async () => {
+export default async function commentHandler (tools: SlashAssignToolkit) {
+  return tools.command('assign', async () => {
     const issue = tools.context.payload.issue as Issue
     const comment = tools.context.payload.comment
 
