@@ -8,23 +8,14 @@ export default class StaleAssignments {
     private tools: SlashAssignToolkit
   ) {}
 
-  static getQueryTypeRestriction (type: string) {
-    if (type === 'pulls') {
-      return 'is:pr'
-    } else if (type === 'issues') {
-      return 'is:issue'
-    }
-    throw new Error(`Unknown type: ${type}. Valid types are 'pulls' and 'issues'`)
-  }
-
-  async getStaleAssignments (type: string) {
+  async getStaleAssignments () {
     const assignedLabel = this.tools.inputs.mark_label
     const exemptLabel = this.tools.inputs.pin_label
 
     const queryParts = [
       `label:"${assignedLabel}"`,
       `-label:"${exemptLabel}"`,
-      StaleAssignments.getQueryTypeRestriction(type)
+      'is:issue'
     ]
 
     return this.search(queryParts)
