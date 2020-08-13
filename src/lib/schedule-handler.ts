@@ -1,4 +1,4 @@
-import { SlashAssignToolkit } from '.';
+import { SlashAssignToolkit } from '../';
 import StaleAssignments from './issue-processor'
 
 export default async function scheduleHandler (tools: SlashAssignToolkit) {

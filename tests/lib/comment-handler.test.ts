@@ -1,6 +1,7 @@
 import nock from 'nock'
-import slashAssignAction, { SlashAssignToolkit } from '../src/lib'
-import { generateToolkit } from './helpers'
+import { SlashAssignToolkit } from '../../src'
+import commentHandler from '../../src/lib/comment-handler'
+import { generateToolkit } from '../helpers'
 
 describe('slash-assign-action', () => {
   let tools: SlashAssignToolkit
@@ -15,7 +16,7 @@ describe('slash-assign-action', () => {
       .post('/repos/JasonEtco/testing/issues/1/assignees')
       .reply(200)
 
-    await slashAssignAction(tools)
+    await commentHandler(tools)
 
     expect(nock.isDone()).toBe(true)
   })

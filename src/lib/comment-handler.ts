@@ -1,5 +1,5 @@
 import dedent from 'dedent'
-import { SlashAssignToolkit } from '.'
+import { SlashAssignToolkit } from '../'
 import { Issue } from './issue-processor'
 
 export default async function commentHandler (tools: SlashAssignToolkit) {

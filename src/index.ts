@@ -1,6 +1,32 @@
 import { Toolkit } from 'actions-toolkit'
-import slashAssignAction from './lib'
+import commentHandler from './lib/comment-handler'
+import scheduleHandler from './lib/schedule-handler'
 
-Toolkit.run(slashAssignAction, {
+export interface Inputs {
+  assigned_label: string
+  required_label?: string
+  pin_label?: string
+  days_until_warning: string
+  days_until_unassign: string
+  stale_assignment_label: string
+  [key: string]: string | undefined
+}
+
+export type SlashAssignToolkit = Toolkit<Inputs>
+
+async function slashAssignAction (tools: SlashAssignToolkit) {
+  switch (tools.context.event) {
+    case 'issue_comment':
+      await commentHandler(tools)
+      break
+    case 'schedule':
+      await scheduleHandler(tools)
+      break
+    default:
+      throw new Error(`Unhandled event ${tools.context.event}`)
+  }
+}
+
+Toolkit.run<Inputs>(slashAssignAction, {
   event: ['issue_comment.created', 'schedule']
 })

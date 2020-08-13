@@ -1,4 +1,4 @@
-import { SlashAssignToolkit } from '.'
+import { SlashAssignToolkit } from '../'
 import { SearchIssuesAndPullRequestsResponseData } from '@octokit/types'
 
 export type Issue = SearchIssuesAndPullRequestsResponseData['items'][0]
