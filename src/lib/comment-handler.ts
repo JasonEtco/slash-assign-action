@@ -1,9 +1,12 @@
 import dedent from 'dedent'
 import { SlashAssignToolkit } from '.'
+import { Issue } from './issue-processor'
 
 export default function commentHandler (tools: SlashAssignToolkit) {
   tools.command('assign', async () => {
-    const { issue, comment } = tools.context.payload.issue
+    const issue = tools.context.payload.issue as Issue
+    const comment = tools.context.payload.comment
+
     // Check if the issue has the configured label
     if (tools.inputs.required_label) {
       const hasLabel = issue.labels.some(
@@ -18,9 +21,9 @@ export default function commentHandler (tools: SlashAssignToolkit) {
     }
 
     // Check if it has no assignees
-    if (issue.assignees.length !== 0) {
+    if (!issue.assignee) {
       tools.exit.failure(
-        `${issue.number} already has ${issue.assignees.length} assignees.`
+        `${issue.number} is already assigned to ${issue.assignee}`
       )
     }
 

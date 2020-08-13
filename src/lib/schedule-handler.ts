@@ -8,7 +8,7 @@ export default async function scheduleHandler (tools: SlashAssignToolkit) {
 
   for (const issue of issues) {
     // Check for the warning message
-    const hasWarning = await processor.hasWarningMessage(issue)
+    const hasWarning = await processor.hasWarningLabel(issue)
     if (!hasWarning) {
       // Post warning
       await processor.postWarningMessage(issue)
