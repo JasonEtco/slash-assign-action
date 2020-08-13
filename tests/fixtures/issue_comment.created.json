@@ -1,0 +1,13 @@
+{
+  "comment": {
+    "user": {
+      "login": "Shaxx"
+    },
+    "body": "/assign"
+  },
+  "issue": {
+    "labels": [],
+    "assignee": null,
+    "number": 1
+  }
+}

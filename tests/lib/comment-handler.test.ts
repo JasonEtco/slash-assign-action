@@ -1,9 +1,9 @@
 import nock from 'nock'
 import { SlashAssignToolkit } from '../../src'
 import commentHandler from '../../src/lib/comment-handler'
-import { generateToolkit } from '../helpers'
+import { generateToolkit, recordNockRequests } from '../helpers'
 
-describe('slash-assign-action', () => {
+describe('comment-handler', () => {
   let tools: SlashAssignToolkit
 
   beforeEach(() => {
@@ -12,12 +12,32 @@ describe('slash-assign-action', () => {
   })
 
   it('assigns the user to the issue', async () => {
-    nock('https://api.github.com')
-      .post('/repos/JasonEtco/testing/issues/1/assignees')
-      .reply(200)
+    const { scopedNock, requests } = recordNockRequests([
+      {
+        uri: '/repos/JasonEtco/testing/issues/1/assignees',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/labels',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/comments',
+        method: 'post',
+        response: { status: 200 }
+      }
+    ])
 
     await commentHandler(tools)
+    expect(scopedNock.isDone()).toBe(true)
 
-    expect(nock.isDone()).toBe(true)
+    const [
+      assignRequest,
+      labelRequest,
+      commentRequest
+    ] = requests
+
+    expect(assignRequest.assignees).toEqual([tools.context.payload.comment.user.login])
+    expect(labelRequest.labels).toEqual(['slash-assigned'])
   })
 })

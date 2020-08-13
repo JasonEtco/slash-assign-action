@@ -14,14 +14,14 @@ export default async function commentHandler (tools: SlashAssignToolkit) {
       )
 
       if (!hasLabel) {
-        tools.exit.neutral(
+        tools.exit.success(
           `[${tools.inputs.required_label}] label not found in issue ${issue.number}.`
         )
       }
     }
 
     // Check if it has no assignees
-    if (!issue.assignee) {
+    if (issue.assignee) {
       tools.exit.failure(
         `${issue.number} is already assigned to ${issue.assignee}`
       )
@@ -39,14 +39,18 @@ export default async function commentHandler (tools: SlashAssignToolkit) {
       labels: [tools.inputs.assigned_label]
     })
 
-    const days = parseInt(tools.inputs.days_until_unassign, 10)
+    const totalDays = (
+      parseInt(tools.inputs.days_until_warning, 10) +
+      parseInt(tools.inputs.days_until_unassign, 10)
+    )
+
     // Comment saying wassup
     await tools.github.issues.createComment({
       ...tools.context.issue,
       body: dedent`
         This issue [has been assigned](${comment.html_url}) to ${comment.user.login}!
 
-        It will become unassigned if it isn't closed within ${days} days. A maintainer can also add the **${tools.inputs.pin_label}** to prevent it from being unassigned.
+        It will become unassigned if it isn't closed within ${totalDays} days. A maintainer can also add the **${tools.inputs.pin_label}** to prevent it from being unassigned.
       `
     })
   })
