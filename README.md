@@ -27,7 +27,7 @@ jobs:
         uses: JasonEtco/slash-assign-action@v1
         with:
           required_label: good-first-issue
-          mark_label: assigned-to-contributor
+          assigned_label: assigned-to-contributor
 
   unassign:
     if: ${{ github.event_name == schedule }}
@@ -36,7 +36,7 @@ jobs:
       - name: Unassign stale issues
         uses: JasonEtco/slash-assign-action@v1
         with:
-          mark_label: assigned-to-contributor
+          assigned_label: assigned-to-contributor
 ```
 
 ## TODO

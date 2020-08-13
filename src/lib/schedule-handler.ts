@@ -3,8 +3,8 @@ import StaleAssignments from './issue-processor'
 
 export default async function scheduleHandler (tools: SlashAssignToolkit) {
   const processor = new StaleAssignments(tools)
-  // Find all open issues with the mark_label
-  const issues = await processor.getStaleAssignments('issues')
+  // Find all open issues with the assigned_label
+  const issues = await processor.getStaleAssignments()
 
   for (const issue of issues) {
     // Check for the warning message

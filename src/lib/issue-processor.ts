@@ -9,7 +9,7 @@ export default class StaleAssignments {
   ) {}
 
   async getStaleAssignments () {
-    const assignedLabel = this.tools.inputs.mark_label
+    const assignedLabel = this.tools.inputs.assigned_label
     const exemptLabel = this.tools.inputs.pin_label
 
     const queryParts = [

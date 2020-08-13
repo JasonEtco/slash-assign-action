@@ -3,7 +3,7 @@ import commentHandler from './comment-handler'
 import scheduleHandler from './schedule-handler'
 
 export interface Inputs {
-  mark_label: string
+  assigned_label: string
   required_label?: string
   pin_label?: string
   days_until_warning: string

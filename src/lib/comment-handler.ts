@@ -36,7 +36,7 @@ export default function commentHandler (tools: SlashAssignToolkit) {
     // Label the issue
     await tools.github.issues.addLabels({
       ...tools.context.issue,
-      labels: [tools.inputs.mark_label]
+      labels: [tools.inputs.assigned_label]
     })
 
     const days = parseInt(tools.inputs.days_until_unassign, 10)
