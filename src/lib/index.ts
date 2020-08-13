@@ -9,7 +9,7 @@ export interface Inputs {
   days_until_warning: string
   days_until_unassign: string
   stale_assignment_label: string
-  [key: string]: string
+  [key: string]: string | undefined
 }
 
 export type SlashAssignToolkit = Toolkit<Inputs>
