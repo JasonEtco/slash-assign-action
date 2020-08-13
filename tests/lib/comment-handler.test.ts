@@ -11,6 +11,10 @@ describe('comment-handler', () => {
     tools = generateToolkit()
   })
 
+  afterEach(() => {
+    delete process.env.INPUT_REQUIRED_LABEL
+  })
+
   it('assigns the user to the issue', async () => {
     const { scopedNock, requests } = recordNockRequests([
       {
@@ -30,14 +34,55 @@ describe('comment-handler', () => {
 
     await commentHandler(tools)
     expect(scopedNock.isDone()).toBe(true)
+    expect(tools.exit.failure).not.toHaveBeenCalled()
 
     const [
       assignRequest,
-      labelRequest,
-      commentRequest
+      labelRequest
     ] = requests
 
     expect(assignRequest.assignees).toEqual([tools.context.payload.comment.user.login])
     expect(labelRequest.labels).toEqual(['slash-assigned'])
+  })
+
+  it('exits early if the issue is already assigned', async () => {
+    tools.context.payload.issue!.assignee = 'Saladin'
+    await commentHandler(tools)
+    expect(tools.exit.failure).toHaveBeenCalled()
+    expect(tools.exit.failure).toHaveBeenCalledWith('Issue #1 is already assigned to @Saladin')
+    delete tools.context.payload.issue?.assignee
+  })
+
+  it('exits early if required_label is set but not present', async () => {
+    process.env.INPUT_REQUIRED_LABEL = 'required'
+    await commentHandler(tools)
+    expect(tools.exit.failure).toHaveBeenCalled()
+    expect(tools.exit.failure).toHaveBeenCalledWith('Required label [required] label not found in issue #1.')
+  })
+
+  it('assigns the user if required_label is set and present', async () => {
+    process.env.INPUT_REQUIRED_LABEL = 'required'
+    tools.context.payload.issue!.labels = [{ name: 'required' }]
+
+    const { scopedNock } = recordNockRequests([
+      {
+        uri: '/repos/JasonEtco/testing/issues/1/assignees',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/labels',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/comments',
+        method: 'post',
+        response: { status: 200 }
+      }
+    ])
+
+    await commentHandler(tools)
+    expect(tools.exit.failure).not.toHaveBeenCalled()
+    expect(scopedNock.isDone()).toBe(true)
+    tools.context.payload.issue!.labels = []
   })
 })

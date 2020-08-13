@@ -47,11 +47,14 @@ export function getDefaultValues() {
   const yaml = fs.readFileSync(path.join(__dirname, '../action.yml'), 'utf8')
   const { inputs } = jsYaml.safeLoad(yaml) as any
 
-  return Object.keys(inputs).reduce(
-    (sum, key) => ({
-      ...sum,
-      [`INPUT_${key.toUpperCase()}`]: inputs[key].default
-    }),
-    {}
-  )
+  return Object.keys(inputs).reduce((sum, key) => {
+    if ('default' in inputs[key]) {
+      return {
+        ...sum,
+        [`INPUT_${key.toUpperCase()}`]: inputs[key].default
+      }
+    } else {
+      return sum
+    }
+  }, {})
 }

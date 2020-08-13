@@ -14,16 +14,16 @@ export default async function commentHandler (tools: SlashAssignToolkit) {
       )
 
       if (!hasLabel) {
-        tools.exit.success(
-          `[${tools.inputs.required_label}] label not found in issue ${issue.number}.`
+        return tools.exit.failure(
+          `Required label [${tools.inputs.required_label}] label not found in issue #${issue.number}.`
         )
       }
     }
 
     // Check if it has no assignees
     if (issue.assignee) {
-      tools.exit.failure(
-        `${issue.number} is already assigned to ${issue.assignee}`
+      return tools.exit.failure(
+        `Issue #${issue.number} is already assigned to @${issue.assignee}`
       )
     }
 
