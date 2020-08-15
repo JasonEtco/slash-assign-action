@@ -20,6 +20,7 @@ on:
 
 jobs:
   assign:
+    # If the acton was triggered by a new comment that starts with `/assign`
     if: ${{ github.event_name == issue_comment }} && ${{ startsWith(github.event.comment.body, "/assign") }}
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +31,7 @@ jobs:
           assigned_label: assigned-to-contributor
 
   unassign:
+    # If the action was triggered on a schedule
     if: ${{ github.event_name == schedule }}
     runs-on: ubuntu-latest
     steps:
