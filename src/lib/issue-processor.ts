@@ -81,11 +81,18 @@ export default class StaleAssignments {
   }
 
   async unassignIssue (issue: Issue) {
-    return this.tools.github.issues.removeAssignees({
-      ...this.tools.context.repo,
-      issue_number: issue.number,
-      assignees: [issue.assignee.login]
-    })
+    return Promise.all([
+      this.tools.github.issues.removeAssignees({
+        ...this.tools.context.repo,
+        issue_number: issue.number,
+        assignees: [issue.assignee.login]
+      }),
+      this.tools.github.issues.removeLabel({
+        ...this.tools.context.repo,
+        issue_number: issue.number,
+        name: this.tools.inputs.stale_assignment_label
+      })
+    ])
   }
 
   since (days: number) {

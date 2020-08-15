@@ -80,6 +80,11 @@ describe('comment-handler', () => {
         uri: '/repos/JasonEtco/testing/issues/1/assignees',
         method: 'delete',
         response: { status: 200 }
+      },
+      {
+        uri: '/repos/JasonEtco/testing/issues/1/labels/stale-assignment',
+        method: 'delete',
+        response: { status: 200 }
       }
     ])
 
