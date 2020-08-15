@@ -41,31 +41,31 @@ jobs:
 
 ## Options
 
-**`assigned_label`**
+#### `assigned_label`
 
 A label that is added to issues when they're assigned, to track which issues were assigned by this action. Default: `slash-assigned`
 
-**`required_label`**
+#### `required_label`
 
 If set, the issue must have this label to be assigned.
 
-**`days_until_warning`**
+#### `days_until_warning`
 
 The span of time (in days) between a user assigning themselves to the action commenting saying it will become unassigned. Default: `14`
 
-**`days_until_unassign`**
+#### `days_until_unassign`
 
 The span of time (in days) between a warning (see `days_until_warning`) and the issue being unassigned automatically. Default: `7`
 
-**`stale_assignment_label`**
+#### `stale_assignment_label`
 
 The label applied when the assignment is stale (>= `days_until_warning`). Default: `stale-assignment`.
 
-**`pin_label`**
+#### `pin_label`
 
 A label that prevents the user from being unassigned, typically for issues that are expected to take a long time. Default: `pinned`.
 
-**`assigned_comment`**
+#### `assigned_comment`
 
 The comment posted after a user has assigned themselves to an issue. This is a Mustache template that supports the following variables:
 
@@ -82,7 +82,7 @@ This issue [has been assigned]({{ comment.html_url }}) to {{ comment.user.login 
 It will become unassigned if it isn't closed within {{ totalDays }} days. A maintainer can also add the **{{ inputs.pin_label }}** label to prevent it from being unassigned.
 ```
 
-**`warning_comment`**
+#### `warning_comment`
 
 The comment posted to warn a user that the issue will become unassigned. This is a Mustache template that supports the following variables: 
 
