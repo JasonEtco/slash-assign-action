@@ -1,7 +1,7 @@
 <h3 align="center">✋💪</h3>
 <h3 align="center">[WIP] `/assign` action</h3>
 
-<p align="center"><a href="https://github.com/JasonEtco/slash-assign-action"><img alt="GitHub Actions status" src="https://github.com/JasonEtco/slash-assign-action/workflows/CI/badge.svg"></a> <a href="https://codecov.io/gh/JasonEtco/slash-assign-action/"><img src="https://badgen.now.sh/codecov/c/github/JasonEtco/slash-assign-action" alt="Codecov"></a></p>
+<p align="center"><a href="https://github.com/JasonEtco/slash-assign-action"><img alt="GitHub Actions status" src="https://github.com/JasonEtco/slash-assign-action/workflows/CI/badge.svg"></a> <a href="https://codecov.io/gh/JasonEtco/slash-assign-action"><img src="https://codecov.io/gh/JasonEtco/slash-assign-action/branch/main/graph/badge.svg" /></a></p>
 
 ---
 
