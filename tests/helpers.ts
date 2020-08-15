@@ -26,12 +26,12 @@ export interface Endpoint {
 
 export function recordNockRequests (endpoints: Endpoint[]) {
   const scopedNock = nock('https://api.github.com')
-  const requests: any[] = []
+  const requests: Array<{ uri: string, params: any }> = []
 
   endpoints.forEach((endpoint, index) => {
     scopedNock[endpoint.method](endpoint.uri)
       .reply(endpoint.response.status, (uri, params) => {
-        requests[index] = params
+        requests[index] = { uri, params }
         return endpoint.response.body
       })
   })

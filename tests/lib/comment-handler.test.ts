@@ -42,9 +42,9 @@ describe('comment-handler', () => {
       commentRequest
     ] = requests
 
-    expect(assignRequest.assignees).toEqual([tools.context.payload.comment.user.login])
-    expect(labelRequest.labels).toEqual(['slash-assigned'])
-    expect(commentRequest.body).toMatchSnapshot()
+    expect(assignRequest.params.assignees).toEqual([tools.context.payload.comment.user.login])
+    expect(labelRequest.params.labels).toEqual(['slash-assigned'])
+    expect(commentRequest.params.body).toMatchSnapshot()
   })
 
   it('exits early if the issue is already assigned', async () => {
@@ -110,6 +110,6 @@ describe('comment-handler', () => {
     await commentHandler(tools)
     expect(tools.exit.failure).not.toHaveBeenCalled()
     expect(scopedNock.isDone()).toBe(true)
-    expect(requests[2].body).toBe('Assigned to @Shaxx')
+    expect(requests[2].params.body).toBe('Assigned to @Shaxx')
   })
 })
