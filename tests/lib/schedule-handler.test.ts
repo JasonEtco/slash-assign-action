@@ -22,7 +22,10 @@ describe('comment-handler', () => {
           body: {
             items: [{
               number: 1,
-              labels: []
+              labels: [],
+              assignee: {
+                login: 'Shaxx'
+              }
             }]
           }
         }

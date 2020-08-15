@@ -3,7 +3,9 @@ import { SearchIssuesAndPullRequestsResponseData } from '@octokit/types'
 import { SlashAssignToolkit } from '../'
 import { getInputsFromTools } from './helpers'
 
-export type Issue = SearchIssuesAndPullRequestsResponseData['items'][0]
+export type Issue = SearchIssuesAndPullRequestsResponseData['items'][0] & {
+  assignee: null | SearchIssuesAndPullRequestsResponseData['items'][0]['user']
+}
 
 export default class StaleAssignments {
   private assignmentDuration: number
@@ -65,7 +67,7 @@ export default class StaleAssignments {
         ...this.tools.context.repo,
         issue_number: issue.number,
         body: mustache.render(this.tools.inputs.warning_comment, {
-          user: issue.assignee,
+          assignee: issue.assignee,
           env: process.env,
           inputs: getInputsFromTools(this.tools)
         })
@@ -74,7 +76,7 @@ export default class StaleAssignments {
         ...this.tools.context.repo,
         issue_number: issue.number,
         labels: [this.tools.inputs.stale_assignment_label]
-      }),
+      })
     ])
   }
 
@@ -82,7 +84,7 @@ export default class StaleAssignments {
     return this.tools.github.issues.removeAssignees({
       ...this.tools.context.repo,
       issue_number: issue.number,
-      assignees: [issue.assignee]
+      assignees: [issue.assignee.login]
     })
   }
 
