@@ -29,6 +29,8 @@ export default async function commentHandler (tools: SlashAssignToolkit) {
       )
     }
 
+    tools.log.info(`Assigning @${comment.user.login} to #${issue.number}`)
+
     // Assign the user
     await tools.github.issues.addAssignees({
       ...tools.context.issue,
