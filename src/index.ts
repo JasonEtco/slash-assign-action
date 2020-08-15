@@ -22,6 +22,7 @@ async function slashAssignAction (tools: SlashAssignToolkit) {
       await commentHandler(tools)
       break
     case 'schedule':
+    case 'workflow_dispatch':
       await scheduleHandler(tools)
       break
     default:
@@ -30,5 +31,5 @@ async function slashAssignAction (tools: SlashAssignToolkit) {
 }
 
 Toolkit.run<Inputs>(slashAssignAction, {
-  event: ['issue_comment.created', 'schedule']
+  event: ['issue_comment.created', 'schedule', 'workflow_dispatch']
 })
