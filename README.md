@@ -19,27 +19,24 @@ on:
     types: [created]
 
 jobs:
-  assign:
+  slash_assign:
     # If the acton was triggered by a new comment that starts with `/assign`
-    if: github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/assign')
+    # or a on a schedule
+    if: >
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/assign')) ||
+      github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - name: Assign the user
+      - name: Assign the user or unassign stale assignments
         uses: JasonEtco/slash-assign-action@v1
         with:
           required_label: good-first-issue
           assigned_label: assigned-to-contributor
-
-  unassign:
-    # If the action was triggered on a schedule
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Unassign stale issues
-        uses: JasonEtco/slash-assign-action@v1
-        with:
-          assigned_label: assigned-to-contributor
 ```
+
+### Why the `if`?
+
+That big `if` property is there to prevent the action from running if it doesn't need to. Without it, it'll run on every single issue comment, and that can eat up your Actions minutes. The Action itself also checks for the `/assign` comment.
 
 ## Options
 
@@ -98,4 +95,14 @@ Default:
 @{{ assignee.login }}, this issue hasn't had any activity in {{ inputs.days_until_warning }} days.
 
 It will become unassigned in {{ inputs.days_until_unassign }} days to make room for someone else to contribute.
+```
+
+## `workflow_dispatch` trigger
+
+You can also manually trigger this action via the `workflow_dispatch` event. You'll need to modify the `if` property:
+
+```yaml
+if: >
+  (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/assign')) ||
+  github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 ```
