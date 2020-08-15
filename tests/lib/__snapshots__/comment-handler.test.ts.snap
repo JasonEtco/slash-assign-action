@@ -2,5 +2,6 @@
 
 exports[`comment-handler assigns the user to the issue 1`] = `
 "This issue [has been assigned](https:&#x2F;&#x2F;github.com&#x2F;my-comment) to @Shaxx!
+
 It will become unassigned if it isn't closed within 21 days. A maintainer can also add the **pinned** label to prevent it from being unassigned."
 `;
