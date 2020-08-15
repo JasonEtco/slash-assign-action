@@ -1,4 +1,5 @@
 import dedent from 'dedent'
+import mustache from 'mustache'
 import { SlashAssignToolkit } from '../'
 import { Issue } from './issue-processor'
 
@@ -44,14 +45,26 @@ export default async function commentHandler (tools: SlashAssignToolkit) {
       parseInt(tools.inputs.days_until_unassign, 10)
     )
 
+    const body = mustache.render(tools.inputs.assigned_comment, {
+      totalDays,
+      comment,
+      env: process.env,
+      // Have to explicitly get these, because `tools.inputs` is a Proxy`
+      inputs: {
+        assigned_label: tools.inputs.assigned_label,
+        required_label: tools.inputs.required_label,
+        pin_label: tools.inputs.pin_label,
+        days_until_warning: tools.inputs.days_until_warning,
+        days_until_unassign: tools.inputs.days_until_unassign,
+        stale_assignment_label: tools.inputs.stale_assignment_label,
+        assigned_comment: tools.inputs.assigned_comment,
+      }
+    })
+
     // Comment saying wassup
     await tools.github.issues.createComment({
       ...tools.context.issue,
-      body: dedent`
-        This issue [has been assigned](${comment.html_url}) to ${comment.user.login}!
-
-        It will become unassigned if it isn't closed within ${totalDays} days. A maintainer can also add the **${tools.inputs.pin_label}** to prevent it from being unassigned.
-      `
+      body
     })
   })
 }

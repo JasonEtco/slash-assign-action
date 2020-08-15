@@ -4,7 +4,8 @@
     "user": {
       "login": "Shaxx"
     },
-    "body": "/assign"
+    "body": "/assign",
+    "html_url": "https://github.com/my-comment"
   },
   "issue": {
     "labels": [],

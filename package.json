@@ -9,13 +9,15 @@
   },
   "dependencies": {
     "actions-toolkit": "^6.0.0",
-    "dedent": "^0.7.0"
+    "dedent": "^0.7.0",
+    "mustache": "^4.0.1"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.7",
     "@types/dedent": "^0.7.0",
     "@types/jest": "^26.0.9",
     "@types/js-yaml": "^3.12.5",
+    "@types/mustache": "^4.0.1",
     "@types/semver": "^7.3.1",
     "@zeit/ncc": "^0.22.3",
     "husky": "^4.2.5",

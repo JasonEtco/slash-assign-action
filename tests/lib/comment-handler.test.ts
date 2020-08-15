@@ -38,11 +38,13 @@ describe('comment-handler', () => {
 
     const [
       assignRequest,
-      labelRequest
+      labelRequest,
+      commentRequest
     ] = requests
 
     expect(assignRequest.assignees).toEqual([tools.context.payload.comment.user.login])
     expect(labelRequest.labels).toEqual(['slash-assigned'])
+    expect(commentRequest.body).toMatchSnapshot()
   })
 
   it('exits early if the issue is already assigned', async () => {
@@ -84,5 +86,30 @@ describe('comment-handler', () => {
     expect(tools.exit.failure).not.toHaveBeenCalled()
     expect(scopedNock.isDone()).toBe(true)
     tools.context.payload.issue!.labels = []
+  })
+
+  it('uses a custom assigned_comment message', async () => {
+    process.env.INPUT_ASSIGNED_COMMENT = 'Assigned to @{{ comment.user.login }}'
+
+    const { scopedNock, requests } = recordNockRequests([
+      {
+        uri: '/repos/JasonEtco/testing/issues/1/assignees',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/labels',
+        method: 'post',
+        response: { status: 200 }
+      }, {
+        uri: '/repos/JasonEtco/testing/issues/1/comments',
+        method: 'post',
+        response: { status: 200 }
+      }
+    ])
+
+    await commentHandler(tools)
+    expect(tools.exit.failure).not.toHaveBeenCalled()
+    expect(scopedNock.isDone()).toBe(true)
+    expect(requests[2].body).toBe('Assigned to @Shaxx')
   })
 })

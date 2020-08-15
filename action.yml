@@ -24,4 +24,16 @@ inputs:
   pin_label:
     default: pinned
     description: A label that prevents the user from being unassigned, typically for issues that are expected to take a long time.
+  assigned_comment:
+    description: >
+      The comment posted after a user has assigned themselves to an issue.
+      This is a Mustache template that supports the following variables:
+        * `inputs` (the inputs given to the action)
+        * `comment` (an object of the comment that was created)
+        * `totalDays` (`days_until_warning` + `days_until_unassign`)
+        * `env` (`process.env`, anything you pass to the action via `env`)
+    default: >
+      This issue [has been assigned]({{ comment.html_url }}) to {{ comment.user.login }}!
+
+      It will become unassigned if it isn't closed within {{ totalDays }} days. A maintainer can also add the **{{ inputs.pin_label }}** label to prevent it from being unassigned.
 
