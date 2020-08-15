@@ -19,7 +19,7 @@ export default class StaleAssignments {
     )
   }
 
-  async getStaleAssignments () {
+  async getStaleAssignments (): Promise<Issue[]> {
     const assignedLabel = this.tools.inputs.assigned_label
     const exemptLabel = this.tools.inputs.pin_label
     const { owner, repo } = this.tools.context.repo
@@ -52,7 +52,7 @@ export default class StaleAssignments {
       per_page: 100
     })
 
-    return issues.data.items
+    return issues.data.items as Issue[]
   }
 
   hasWarningLabel (issue: Issue): boolean {
