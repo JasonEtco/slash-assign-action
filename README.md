@@ -41,8 +41,6 @@ jobs:
 
 ## Options
 
-| Key | Description | Default value |
-| --- | --- | --- |
 **`assigned_label`**
 
 A label that is added to issues when they're assigned, to track which issues were assigned by this action. Default: `slash-assigned`
