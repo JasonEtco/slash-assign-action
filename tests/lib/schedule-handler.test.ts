@@ -53,7 +53,7 @@ describe('comment-handler', () => {
 
     const { searchParams } = new URL(`https://api.github.com/${searchRequest.uri}`)
     expect(searchParams.get('q'))
-      .toMatch('label:"slash-assigned" -label:"pinned" is:issue repo:JasonEtco/testing assigned:* is:open updated:<')
+      .toMatch('label:"slash-assigned" -label:"pinned" is:issue repo:JasonEtco/testing is:open updated:<')
     expect(commentRequest.params.body).toBe('@Shaxx, this issue hasn\'t had any activity in 14 days. It will become unassigned in 7 days to make room for someone else to contribute.')
     expect(labelRequest.params.labels).toEqual(['stale-assignment'])
   })
