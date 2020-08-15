@@ -1,5 +1,7 @@
-import { SlashAssignToolkit } from '../'
+import mustache from 'mustache'
 import { SearchIssuesAndPullRequestsResponseData } from '@octokit/types'
+import { SlashAssignToolkit } from '../'
+import { getInputsFromTools } from './helpers'
 
 export type Issue = SearchIssuesAndPullRequestsResponseData['items'][0]
 
@@ -62,7 +64,11 @@ export default class StaleAssignments {
       this.tools.github.issues.createComment({
         ...this.tools.context.repo,
         issue_number: issue.number,
-        body: 'This will become unassigned!'
+        body: mustache.render(this.tools.inputs.warning_comment, {
+          user: issue.assignee,
+          env: process.env,
+          inputs: getInputsFromTools(this.tools)
+        })
       }),
       this.tools.github.issues.addLabels({
         ...this.tools.context.repo,

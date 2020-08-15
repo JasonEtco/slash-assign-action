@@ -10,6 +10,7 @@ export interface Inputs {
   days_until_unassign: string
   stale_assignment_label: string
   assigned_comment: string
+  warning_comment: string
   [key: string]: string | undefined
 }
 

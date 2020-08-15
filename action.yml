@@ -36,4 +36,13 @@ inputs:
       This issue [has been assigned]({{ comment.html_url }}) to {{ comment.user.login }}!
 
       It will become unassigned if it isn't closed within {{ totalDays }} days. A maintainer can also add the **{{ inputs.pin_label }}** label to prevent it from being unassigned.
+  warning_comment:
+    description: >
+      The comment posted to warn a user that the issue will become unassigned.
+      This is a Mustache template that supports the following variables:
+        * `user` (the user that was assigned)
+        * `inputs` (the inputs given to the action)
+        * `env` (`process.env`, anything you pass to the action via `env`)
+    default: >
+      @{{ user.login }}, this issue hasn't had any activity in {{ inputs.days_until_warning }}. It will become unassigned in {{ inputs.days_until_unassign }} to make room for someone else to contribute.
 
