@@ -87,11 +87,13 @@ It will become unassigned if it isn't closed within {{ totalDays }} days. A main
 The comment posted to warn a user that the issue will become unassigned. This is a Mustache template that supports the following variables: 
 
 * `user` (the user that was assigned)
-* `inputs` (the inputs given to the action)</li> <li>
+* `inputs` (the inputs given to the action)
 * `env` (`process.env`, anything you pass to the action via `env`)
 
 Default:
 
 ```
-@{{ assignee.login }}, this issue hasn't had any activity in {{ inputs.days_until_warning }} days. It will become unassigned in {{ inputs.days_until_unassign }} days to make room for someone else to contribute.
+@{{ assignee.login }}, this issue hasn't had any activity in {{ inputs.days_until_warning }} days.
+
+It will become unassigned in {{ inputs.days_until_unassign }} days to make room for someone else to contribute.
 ```
