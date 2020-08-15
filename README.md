@@ -14,14 +14,14 @@ name: Slash assign
 
 on:
   schedule:
-    cron: 0 0 * * *
+    - cron: 0 0 * * *
   issue_comment:
     types: [created]
 
 jobs:
   assign:
     # If the acton was triggered by a new comment that starts with `/assign`
-    if: ${{ github.event_name == issue_comment }} && ${{ startsWith(github.event.comment.body, "/assign") }}
+    if: github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/assign')
     runs-on: ubuntu-latest
     steps:
       - name: Assign the user
@@ -32,7 +32,7 @@ jobs:
 
   unassign:
     # If the action was triggered on a schedule
-    if: ${{ github.event_name == schedule }}
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Unassign stale issues
