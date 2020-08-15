@@ -20,7 +20,7 @@ export function generateToolkit() {
 
 export interface Endpoint {
   uri: string | RegExp
-  method: 'get' | 'post'
+  method: 'get' | 'post' | 'put' | 'patch' | 'delete'
   response: { status: number, body?: any}
 }
 
