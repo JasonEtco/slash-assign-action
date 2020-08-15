@@ -7,6 +7,8 @@ export default async function scheduleHandler (tools: SlashAssignToolkit) {
   const issues = await processor.getStaleAssignments()
 
   for (const issue of issues) {
+    // Ensure that the issue is assigned to someone
+    if (!issue.assignee) continue
     // Check for the warning message
     const hasWarning = processor.hasWarningLabel(issue)
     if (!hasWarning) {

@@ -37,8 +37,8 @@ export default class StaleAssignments {
       'is:issue',
       // Only search within this repository
       `repo:${owner}/${repo}`,
-      // Only find issues/PRs with an assignee
-      'assigned:*',
+      // TODO: Only find issues/PRs with an assignee. Bug in search API.
+      // 'assigned:*',
       // Only find opened issues/PRs
       'is:open',
       // Updated within the last X days
